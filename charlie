@@ -1,0 +1,171 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <ctype.h>
+
+/* declare functions used in main */
+void countStrInFile(char* str, FILE* f);
+void countStrNoCaseInFile(char* str, FILE* f);
+void countStrAndShowInFile(char* str, FILE* f);
+void removeLeadingSpacesInFile(FILE* f);
+void countStrAndShowLineNumberInFile(char* str, FILE* f);
+void showLineNumberInFile(FILE* f);
+void countWordOccurenceInFile(char* word, FILE* f);
+char *removeLeadingSpaces(char *str);
+void strLower(char str[]);
+
+/* main function */
+int main(int argc, char * argv[]) {
+
+    char* filename = argv[argc-1];
+    FILE* f = fopen(filename, "r");
+    int opt = 0;
+    int nWords;
+    char* str;
+
+    /* check file exist */
+    if (f == NULL) {
+        printf("File not found!\n");
+        return 0;
+    }
+
+    /* read options */
+    while ((opt = getopt(argc, argv, "coisnk")) != -1) {
+        switch (opt) {
+            case 'c':
+                if (argc == 4) {           /* just -c, no -i */
+                    str = argv[optind];
+                    countStrInFile(str, f);
+                }
+                break;
+            case 'i':
+                str = argv[optind];
+                countStrNoCaseInFile(str, f);
+                break;
+            case 'o':
+                str = argv[optind];
+                countStrAndShowInFile(str, f);
+                break;
+            case 's':
+                removeLeadingSpacesInFile(f);
+                break;
+            case 'n':
+                if (argc == 4) {            /* just -n */
+                    str = argv[optind];
+                    countStrAndShowLineNumberInFile(str, f);
+                } else {                    /* -n string */
+                    showLineNumberInFile(f);
+                }
+                break;
+            case 'k':
+                /* number of words in list */
+                nWords = argc - optind - 1;
+                for (int i = optind; i <optind + nWords; i++) {
+                    countWordOccurenceInFile(argv[i], f);
+                }
+                break;
+                default:
+                printf("Wrong option!\n");
+                break;
+        }
+    }
+    fclose(f);
+    return 0;
+}
+/* count string in file */
+void countStrInFile(char* str, FILE* f) {
+    char line[256];
+    char* substr = NULL;
+    int count = 0;
+    while (fgets(line, sizeof(line), f)) {
+        substr = strstr(line, str);
+        if (substr != NULL) {
+            count++;
+        }
+    }
+    printf("%d\n", count);
+}
+/* count string in file, ignore case */
+void countStrNoCaseInFile(char* str, FILE* f) {
+    char line[256];
+    char* substr = NULL;
+    int count = 0;
+    strLower(str);
+    while (fgets(line, sizeof(line), f)) {
+        strLower(line);
+        substr = strstr(line, str);
+        if (substr != NULL) {
+            count++;
+        }
+    }
+    printf("%d\n", count);
+}
+/* count string in file, also show matched line */
+void countStrAndShowInFile(char* str, FILE* f) {
+    char line[256];
+    char* substr = NULL;
+    int count = 0;
+    while (fgets(line, sizeof(line), f)) {
+        substr = strstr(line, str);
+        if (substr != NULL) {
+            count++;
+            printf("%s", line);
+        }
+    }
+    printf("%d\n", count);
+}
+/* count string in file, also show matched line with line number */
+void countStrAndShowLineNumberInFile(char* str, FILE* f) {
+    char line[256];
+    char* substr = NULL;
+    int lineNo = 0;
+    while (fgets(line, sizeof(line), f)) {
+        substr = strstr(line, str);
+        if (substr != NULL) {
+            printf("[%d]: %s", lineNo + 1, line);
+        }
+        lineNo++;
+    }
+}
+/* print file content with line number */
+void showLineNumberInFile(FILE* f) {
+    int lineNo = 1;
+    char line[256];
+    while (fgets(line, sizeof(line), f)) {
+        printf("[%d]: %s", lineNo++, line);
+    }
+}
+/* count word's occurence in file */
+void countWordOccurenceInFile(char* word, FILE* f) {
+    char s[255];
+    int count = 0;
+    rewind(f);
+    while(!feof(f))//this loop searches the for the current word
+    {
+        fscanf(f,"%s",s);
+        if(!strcmp(s,word))//if match found increment num
+            count++;
+    }
+    printf("%s: %d\n", word, count);
+}
+/* remove leadin spaces in a string */
+char* removeLeadingSpaces(char* str)
+{    // Trim leading space
+    while(isspace((unsigned char)*str)) str++;
+    return str;
+}
+/* remove leadin spaces in all lines of file */
+void removeLeadingSpacesInFile(FILE* f) {
+    char line[256];
+
+    while (fgets(line, sizeof(line), f)) {
+        printf("%s", removeLeadingSpaces(line));
+    }
+}
+/* convert string to lower case */
+void strLower(char str[])
+{
+    int i;
+    for (i = 0; str[i] != '\0'; i++)
+        str[i] = (char)tolower(str[i]);
+}
