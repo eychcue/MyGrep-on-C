@@ -1,4 +1,4 @@
-#incluse <stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 void main(){
@@ -26,19 +26,19 @@ void main(){
 
 
 void callCMD(char cmd[], int index){
-	if(cmd[index] == 'c' || cmd[index] == 'C'){
+	if(cmd[index] == 'c'){
 		funcC(cmd[], index);
 	}
-	else if(cmd[index] == 'o' || (cmd[index] == 'O'){
+	else if(cmd[index] == 'o'){
 		funcO(cmd[], index);
 	}	
-	else if(cmd[index] == 's' || (cmd[index] == 'S'){
+	else if(cmd[index] == 's'){
 		funcS(cmd[], index);
 	}
-	else if(cmd[index] == 'n' || (cmd[index] == 'N'){
+	else if(cmd[index] == 'n'){
 		funcN(cmd[], index);
 	}
-	else if(cmd[index] == 'k' || (cmd[index] == 'K'){
+	else if(cmd[index] == 'k'){
 		funcK(cmd[], index);
 	}
 	else {
