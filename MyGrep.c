@@ -12,37 +12,35 @@ void main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
-	if (strcmp(argv[1], "-c")) {
-		if (argc == 5) {
-			/* Call case insensitive -c func with specified arguments */
-		}
-		else {
-			/* Call -c func with specified arguments */
-		}
+
+	switch (argv[1][1]) {
+		case 'c' :
+			if (argc == 5) {
+				/* Call case insensitive -c func with specified arguments */
+			}
+			else {
+				/* Call -c func with specified arguments */
+			}
+
+		case 'o' :
+			/* Call -o func with specified arguments */
+	
+		case 's' :
+			funcS(f);
+
+		case 'n' :
+			if (argc == 4) {
+				/* Call -n func with string argument included */
+			}
+			/* Call -n func with specified arguments */
+
+		case 'k' :
+			/* Call -k func with specified arguments */
+
+		default :
+			printf("Error, command %s not found\n", argv[1]);
 	}
 
-	else if (strcmp(argv[1], "-o")) {
-		/* Call -o func with specified arguments */
-	}
-
-	else if (strcmp(argv[1], "-s")) {
-		funcS(f);
-	}
-
-	else if (strcmp(argv[1], "-n")) {
-		if (argc == 4) {
-			/* Call -n func with string argument included */
-		}
-		/* Call -n func with specified arguments */
-	}
-
-	else if (strcmp(argv[1], "-k")) {
-		/* Call -k func with specified arguments */
-	}
-
-	else {
-		printf("Error, command %s not found\n", argv[1]);
-	}
 }
 
 
