@@ -1,10 +1,10 @@
 void funcC(char* high, FILE* f)
   char w[255];
-  while(!feof(f))
+  while(!feof(f))/*start searhing from the beginning of the file */
   {
-    fscanf(f,"%s",s);
+    fscanf(f,"%s",s); /*search the match screen */
    }
-    printf("\033[0;31m");
-    printf("%s\n", high);
-    printf("\033[0m");
+    printf("\033[0;31m"); /* 
+    printf("%s\n", high); /*printing the match string*/
+    printf("\033[0m");/* escape after printing red.*/
   }
