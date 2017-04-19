@@ -1,0 +1,10 @@
+void funcC(char* high, FILE* f)
+  char w[255];
+  while(!feof(f))
+  {
+    fscanf(f,"%s",s);
+   }
+    printf("\033[0;31m");
+    printf("%s\n", high);
+    printf("\033[0m");
+  }
