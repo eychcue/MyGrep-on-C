@@ -1,0 +1,12 @@
+void funcC(char* high, FILE* f)
+  int max_Char = 255;
+  char w[max_Char];/*//Creating a character array with limit of 255 */
+  /*we can rewrite above array as char w[255] */
+  while(!feof(f))/*start searhing from the beginning of the file */
+  {
+    fscanf(f,"%s",s); /*search the match screen */
+   }
+    printf("\033[0;31m"); /* 
+    printf("%s\n", high); /*printing the match string*/
+    printf("\033[0m");/* escape after printing red.*/
+  }
