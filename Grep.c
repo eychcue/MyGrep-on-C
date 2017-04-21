@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,6 +12,7 @@ void dashS(FILE *f);
 void dashNwithString(char *str, FILE *fp);
 void dashN(FILE *fp);
 
+//Main
 void main(int argc, char *argv[]) {
 
     char *filename = argv[argc - 1];
@@ -23,6 +25,7 @@ void main(int argc, char *argv[]) {
         exit(-1);
     }
 
+    //Switch the arguments
     switch (argv[1][1]) {
         case 'c' :
             /* Call -c func with specified arguments */
@@ -75,7 +78,7 @@ void returnDashK(int argc, char *argv[]) {
         FILE *fp;
         fp = fopen(argv[argc - 1], "r");
         count = countString(argv[i], fp, caseIgnore);
-        printf("%s + %d \n", argv[i], count);
+        printf("%s %d \n", argv[i], count);
     }
 }
 
@@ -110,7 +113,7 @@ int countString(char *strngSearch, FILE *fileName, int bol) {
                 count++;
             }
         } else {
-            if ((strstr(fillArr, strngSearch)) != NULL) {
+            if ((strcasestr(fillArr, strngSearch)) != NULL) {
                 count++;
             }
         }
@@ -121,15 +124,21 @@ int countString(char *strngSearch, FILE *fileName, int bol) {
 
 void dashO(char *high, FILE *f) {
     int MAX_CHAR = 256;
-    char w[MAX_CHAR];//Creating a character array with limit of 255
-
-    while (!feof(f)) {//start searching from the beginning of the file
-        fscanf(f, "%s", w); //search the match screen
+    char w[MAX_CHAR];/*//Creating a character array with limit of 255 */
+    int w_count = 0;
+    while (!feof(f))/*start searching from the beginning of the file */
+    {
+        fscanf(f, "%s", w);/*Scan the file characters into "w"*/
+        if (strstr(w,high))/*count how many times the input string matches the scanned string*/ {
+            w_count++;
+        }
     }
-
-    printf("\033[0;31m");/*Open the red color*/
-    printf("%s\n", high); /*Printing the match string*/
-    printf("\033[0m"); /*escape after printing red.*/
+    int i;
+    for (i = 0; i < w_count; i++) {
+        printf("\033[1;31m"); /* printing red*/
+        printf("%s\n", high); /*printing the match string*/
+        printf("\033[1m");/*close the red color*/
+    }
 }
 
 
@@ -140,17 +149,17 @@ void dashS(FILE *f) {
         if (!lineStart) {
             if (c == '\n') {        // new line, start removing spaces again
                 lineStart = 1;
+                printf("\n");
             } else {                // prints line until it reaches \n
                 printf("%c", c);
             }
         } else {
-            if (c != ' ') {         // find first non-space char in line and starts printing
+            if (c != ' ' && c!= '\t') {         // find first non-space char in line and starts printing
                 lineStart = 0;
                 printf("%c", c);
             }
         }
     }
-    printf("\n");//Prints new line at the end
 }
 
 void dashNwithString(char *str, FILE *fp) {
