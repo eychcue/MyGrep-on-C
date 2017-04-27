@@ -34,3 +34,6 @@ list    5
 words   3
 of      2
 this    1
+
+$MyGrep –x “This is a list of words” test.txt
+-x: Select only matches that exactly match the whole line & prints it highlighted.
