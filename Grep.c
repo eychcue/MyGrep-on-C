@@ -11,6 +11,8 @@ void dashO(char *high, FILE *f);
 void dashS(FILE *f);
 void dashNwithString(char *str, FILE *fp);
 void dashN(FILE *fp);
+void dashX(char *str, FILE *fp);
+
 
 //Main
 void main(int argc, char *argv[]) {
@@ -55,6 +57,11 @@ void main(int argc, char *argv[]) {
             /* Call -k func with specified arguments */
             returnDashK(argc, argv);
             break;
+            
+        case 'x':
+            str = argv[2];
+            dashX(str, f);
+            break;   
 
         default :
             printf("Error, command %s not found\n", argv[1]);
@@ -196,5 +203,20 @@ void dashN(FILE *fp) {
             c = getc(fp);
         }
         printf("\n");//Prints a new line
+    }
+}
+
+void dashX(char *str, __FILE *fp){
+    int MAX = 255;
+    char line[MAX];
+
+    while (fgets(line, MAX, fp) != NULL) {
+
+        if (strstr(line, str)) {
+            printf("\033[1;31m"); /*open red*/
+            printf("%s", str); /*print the input string*/
+            printf("\033[1m");/*reset color*/
+            printf("\n");
+        }
     }
 }
