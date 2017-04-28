@@ -12,6 +12,7 @@ int main (int argc, char *argv[])
 	
 	FILE  *fp;
 	fp = fopen(fileName, "r");
+	
 	if(strcmp(argv[1], "-c") == 0){
 		returnCount(argc,argv);
 	}else if (strcmp(argv[1], "-k") == 0){
@@ -21,15 +22,16 @@ int main (int argc, char *argv[])
 }
 
 int countString(char* strngSearch, FILE* fileName, int bol) {
-	char fillArr[1000];
+	char fillArr[100];
 	int count =0;
-	while(fgets(fillArr, 1000, fileName) != NULL) {
+	
+	while(fscanf(fileName,"%s",fillArr)!=-1) {
 		if(!bol){
-			if((strstr(fillArr, strngSearch)) != NULL) {
+			if((strcmp(fillArr, strngSearch)) ==0) {
 				count++;
 			}
 		}else{
-			if((strcasestr(fillArr, strngSearch)) != NULL) {
+			if((strcasecmp(fillArr, strngSearch)) ==0) {
 				count++;
 			}
 		}
@@ -42,16 +44,18 @@ void returnDashK(int argc, char * argv[]) {
 	
 	int i=0;
 	int caseIgnore =0;
-	if(strcmp(argv[2], "-i")){
+	int start =2;
+	if(strcmp(argv[2], "-i") ==0){
 		caseIgnore = 1;
+		start = 3;
 	}
 	
 	int count;
-	for(i =2;i<argc-1;i++) {
+	for(i =start;i<argc-1;i++) {
 		FILE  *fp;
 		fp = fopen(argv[argc - 1], "r");
 		count = countString(argv[i], fp, caseIgnore);
-		printf("%s + %d \n", argv[i], count);
+		printf("%s %d \n", argv[i], count);
 	}
 }
 
@@ -77,4 +81,3 @@ void returnCount(int argc, char * argv[]) {
 		printf("%d \n", count);
 	}
 }
-
